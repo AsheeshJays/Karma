@@ -1,0 +1,114 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load cart%}
+{% block title %}
+	<title>Karma | CheckOut</title>
+	{% endblock %}
+{% block body %}
+<!-- Start Banner Area -->
+    <section class="banner-area organic-breadcrumb">
+        <div class="container">
+            <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+                <div class="col-first">
+                    <h1>Checkout</h1>
+                    <nav class="d-flex align-items-center">
+                        <a href="/">Home<span class="lnr lnr-arrow-right"></span></a>
+                        <a href="#">Checkout</a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Banner Area -->
+
+    <!--================Checkout Area =================-->
+    <section class="checkout_area section_gap">
+        <div class="container">
+            <div class="billing_details">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div>
+                            <h3 style="text-align: center;">Check Out</h3>
+                            <form class="row login_form" action="/editProfile2/" method="post" id="contactForm" novalidate="novalidate" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="col-md-12 form-group">
+                                    <input type="text" class="form-control" id="name" name="name" value="{{User.name}}">
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <input type="email" class="form-control" id="email" name="email" value="{{User.email}}">
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <input type="text" class="form-control" id="phone" name="phone" value="{{User.phone}}">
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <input type="text" class="form-control" id="addressline1" name="addressline1" value="{{User.addressLine1}}">
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <input type="text" class="form-control" id="addressline2" name="addressline2" value="{{User.addressLine2}}" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Username'">
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <input type="text" class="form-control" id="addressline3" name="addressline3" value="{{User.addressLine3}}" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Username'">
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <input type="text" class="form-control" id="pin" name="pin" value="{{User.pin}}" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Username'">
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <input type="text" class="form-control" id="city" name="city" value="{{User.city}}" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Username'">
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <input type="text" class="form-control" id="state" name="state" value="{{User.state}}" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Username'">
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <button type="submit" value="submit" class="primary-btn">Update</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="order_box">
+                            <h2>Your Order</h2>
+                            <ul class="list">
+                                <li><a href="#">Product <span>Total</span></a></li>
+                                {% for i in Product%}
+                                <li><a href="#">{{i.name}}&nbsp;({{i.finalPrice }}* {{ request|cartQuantity:i.pid }})</span> <span class="last">{{ request|cartTotal:i.pid }}</span></a></li>
+                                {% endfor %}
+                            </ul>
+                            <ul class="list list_2">
+                                <li><a href="#">Subtotal <span>Rs {{Total}}</span></a></li>
+                                {% if Shipping %}
+                                <li><a href="#">Shipping <span>Rs{{Shipping}}</span></a></li>
+                                {% else %}
+                                <li><a href="#">Shipping <span>Free</span></a></li>
+                                {% endif %}
+                                <li><a href="#">Total <span>Rs {{Final}}</span></a></li>
+                            </ul>
+                            <form method="post">
+                                {% csrf_token %}
+                            <div class="payment_item">
+                                <div class="radion_btn">
+                                    <input type="radio" id="f-option5" name="mode" value="cod" checked>
+                                    <label for="f-option5">COD</label>
+                                    <div class="check"></div>
+                                </div>
+                                <p>Cash On Delivery</p>
+                            </div>
+                            <div class="payment_item active">
+                                <div class="radion_btn">
+                                    <input type="radio" id="f-option6" name="mode" value="razorpay">
+                                    <label for="f-option6">Online Payment </label>
+                                    <img src="{% static 'img/product/card.jpg' %}" alt="">
+                                    <div class="check"></div>
+                                </div>
+                                <p>Pay via RozarPay; you can pay with your credit card if you don’t have a PayPal
+                                    account.</p>
+                            </div>
+                                <button class="primary-btn" style="width:100%;border:none;">Proceed to Place Order</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--================End Checkout Area =================-->
+{% endblock %}
